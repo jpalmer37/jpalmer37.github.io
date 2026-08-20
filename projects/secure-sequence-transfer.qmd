@@ -1,0 +1,101 @@
+---
+title: "Secure sequence transfer"
+subtitle: "A confirm-before-destroy data path from partner organizations to an on-premises cluster"
+description: "A serverless AWS architecture for immutable, tenant-isolated sequence uploads with durable audit records."
+page-layout: article
+toc: true
+toc-depth: 2
+---
+
+<p class="eyebrow"><span class="prompt">$</span> case-study --system secure-transfer</p>
+
+::: {.case-meta}
+**Role**<br>
+Sole architect and developer of the service within a shared multi-account AWS
+genomics platform.
+
+**Stack**<br>
+AWS CDK in Python, S3, EventBridge, SQS, Lambda, RDS PostgreSQL, Cognito, IAM,
+Microsoft Entra, CloudWatch, pg8000, boto3, pytest.
+
+**Scale**<br>
+Approximately 4,700 lines of infrastructure, Lambda, agent, and test code.
+:::
+
+## The problem
+
+Partner laboratories need to transfer raw sequence data into an on-premises
+analysis environment. The safety requirements are stricter than ordinary file
+upload: one partner must never see another's data; uploaders must not read back,
+overwrite, or delete an object; data must not expire until the receiving
+cluster confirms a verified copy; and the audit trail must outlive the file.
+
+## Separate identity paths
+
+Machine and browser users have different security and operational needs, so the
+service deliberately keeps their identity paths separate.
+
+```{mermaid}
+%%| label: fig-transfer-architecture
+%%| fig-cap: "Identity, transfer, verification, and audit paths."
+%%| fig-alt: "Partner automation and browser users authenticate through separate identity paths, upload to immutable tenant prefixes in S3, and trigger queued transfer to an on-premises verification agent and a durable audit database."
+
+flowchart LR
+  A[Partner automation] -->|Entra OIDC| B[Write-only AWS role]
+  C[Browser user] -->|Cognito and SAML| D[Upload portal]
+  B --> E[(Immutable S3 tenant prefix)]
+  D --> E
+  E -->|EventBridge| F[SQS transfer queue]
+  F --> G[On-premises pull agent]
+  G -->|verify and tag| E
+  E -->|status events| H[Metadata Lambda]
+  H --> I[(Permanent PostgreSQL audit)]
+```
+
+- Automation exchanges Microsoft Entra workload identity for short-lived,
+  prefix-restricted AWS credentials. No long-lived access keys are issued.
+- Browser users authenticate through Cognito/SAML and upload directly to S3 in
+  multipart chunks.
+- The two paths share the protected storage contract but not their identity
+  configuration or failure modes.
+
+## Immutability and tenancy
+
+Safety is enforced at the bucket and IAM layers rather than relying on portal
+code:
+
+- create operations require conditional, non-overwriting semantics;
+- partners receive write-only access to their own prefix;
+- public access and insecure transport are denied;
+- partner credentials cannot list, read, overwrite, or delete objects;
+- multipart uploads use checksums and the same conditional completion rule.
+
+## Confirm before destroy
+
+An object event enters a durable SQS queue. The on-premises agent downloads and
+verifies the file, then adds the status tag that makes it eligible for archival
+and eventual expiry. If the agent stops, unverified objects accumulate safely
+and an alarm reports the queue age; the lifecycle never silently removes them.
+
+A metadata Lambda records monotonic state changes in PostgreSQL. Those audit
+rows are permanent even after the corresponding object reaches the end of its
+retention period.
+
+## Reliability evidence
+
+- Four pytest modules cover infrastructure, portal handling, metadata
+  persistence, and the pull agent.
+- Failed transfers move to a dead-letter queue after bounded retries.
+- CloudWatch alarms cover stalled transfers.
+- Cross-boundary configuration is published through retained parameters.
+- Documentation is divided by partner, cluster-operator, and platform-admin
+  audiences.
+
+## Contribution boundary
+
+I solely architected and implemented this service. It is deployed within a
+shared genomics cloud where I also contribute infrastructure and CI/CD changes;
+the surrounding platform is a team codebase and is described as such.
+
+The source repository is not public. No private endpoints, account identifiers,
+partner names, or deployment configuration are exposed here.

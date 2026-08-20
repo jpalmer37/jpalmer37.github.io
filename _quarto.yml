@@ -1,0 +1,49 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "John Palmer"
+  site-url: "https://jpalmer37.github.io"
+  favicon: assets/favicon.svg
+  description: "Genomics software developer building validated workflows, data systems, and cloud infrastructure for public-health genomics."
+  open-graph: true
+  navbar:
+    pinned: true
+    left:
+      - href: index.qmd
+        text: Home
+      - href: projects/influenza-surveillance.qmd
+        text: Influenza surveillance
+      - href: projects/secure-sequence-transfer.qmd
+        text: Secure transfer
+      - href: projects/workflow-automation.qmd
+        text: Workflow automation
+    right:
+      - href: https://github.com/jpalmer37
+        text: GitHub
+      - href: https://linkedin.com/in/john-palmer-932542b6/
+        text: LinkedIn
+  page-footer:
+    left: "© 2026 John Palmer"
+    right:
+      - href: https://github.com/jpalmer37
+        text: GitHub
+      - href: https://linkedin.com/in/john-palmer-932542b6/
+        text: LinkedIn
+
+format:
+  html:
+    theme:
+      - darkly
+      - styles.scss
+    toc: false
+    smooth-scroll: true
+    link-external-newwindow: true
+    mermaid:
+      theme: dark
+
+execute:
+  enabled: false
+
+lang: en-CA

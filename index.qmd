@@ -1,0 +1,205 @@
+---
+title: "John Palmer"
+pagetitle: "John Palmer — Genomics Software Developer"
+description: "Scientific software engineer building validated genomics workflows, secure cloud systems, and reliable data infrastructure."
+page-layout: full
+title-block-style: none
+---
+
+::: {.hero .column-screen-inset}
+
+::: {.hero-copy}
+
+<p class="eyebrow"><span class="prompt">$</span> whoami</p>
+
+## Genomics software built for real-world decisions
+
+I am a genomics software developer and bioinformatician who turns difficult
+scientific analyses into reliable production systems. I work across Python,
+Nextflow, databases, HPC, and AWS—with independent validation and operational
+adoption treated as part of the engineering, not as afterthoughts.
+
+::: {.hero-actions}
+
+[Explore selected systems](#selected-systems){.btn .btn-primary}
+[GitHub](https://github.com/jpalmer37){.btn .btn-outline-light}
+[LinkedIn](https://linkedin.com/in/john-palmer-932542b6/){.btn .btn-outline-light}
+
+:::
+
+:::
+
+::: {.hero-status aria-label="Professional summary"}
+
+```text
+role       Genomics Software Developer
+location   Toronto, Ontario, Canada
+focus      Production scientific software
+method     Build → validate → operate
+```
+
+:::
+
+:::
+
+::: {.column-page}
+
+## Selected systems {#selected-systems}
+
+The strongest examples of my work are systems that connect biological analysis
+to dependable engineering and documented evidence.
+
+::: {.project-grid}
+
+::: {.project-card}
+
+<p class="card-index">01 / VALIDATED GENOMICS</p>
+
+### Influenza surveillance
+
+A production mutation-analysis platform spanning Python and Nextflow, with
+reference-aware annotation, configurable watchlists, structured reporting, and
+independent validation across every influenza segment.
+
+**Role:** Sole architect and principal developer, alongside leadership and
+contributions in shared upstream workflows.
+
+[Read the case study](projects/influenza-surveillance.qmd)
+
+:::
+
+::: {.project-card}
+
+<p class="card-index">02 / SECURE CLOUD</p>
+
+### Sequence submission on AWS
+
+A serverless service for partner-to-laboratory sequence transfer with separate
+machine and browser identity paths, immutable uploads, tenant isolation,
+confirm-before-expiry lifecycle controls, and permanent audit records.
+
+**Role:** Sole architect and developer within a shared genomics cloud platform.
+
+[Read the case study](projects/secure-sequence-transfer.qmd)
+
+:::
+
+::: {.project-card}
+
+<p class="card-index">03 / WORKFLOW OPERATIONS</p>
+
+### Automation and validation
+
+An operational layer around pathogen-genomics pipelines: formal validation,
+dependency-aware orchestration, result aggregation, database integration, and
+downstream chaining on shared HPC infrastructure.
+
+**Role:** Led the influenza transition and contributed across shared public
+health workflow repositories.
+
+[Read the case study](projects/workflow-automation.qmd)
+
+:::
+
+:::
+
+## Evidence, not decoration
+
+::: {.metric-grid}
+
+::: {.metric}
+<span class="metric-value">0.9915</span>
+<span class="metric-label">all-SNV F1 across 192 samples × 8 segments</span>
+:::
+
+::: {.metric}
+<span class="metric-value">100%</span>
+<span class="metric-label">subtype and clade accuracy in stated validation cohorts</span>
+:::
+
+::: {.metric}
+<span class="metric-value">1,184</span>
+<span class="metric-label">segment sequences in consensus-accuracy validation</span>
+:::
+
+:::
+
+Metrics are reported with their original scope. I use independent ground
+truths, predefined acceptance criteria, and discrepancy analysis to understand
+why a system succeeds or fails—not only whether a summary score looks good.
+
+## How I work
+
+::: {.principle-grid}
+
+::: {.principle}
+### Production first
+Scientific code should be versioned, observable, recoverable, and usable by the
+people who depend on it.
+:::
+
+::: {.principle}
+### Validation is engineering
+I design orthogonal tests, trace anomalies to root causes, and turn the findings
+into production fixes.
+:::
+
+::: {.principle}
+### Boundaries matter
+Identity, tenancy, failure modes, data ownership, and individual contributions
+should be explicit in both architecture and documentation.
+:::
+
+:::
+
+## Shared public work
+
+My professional work includes both solely authored systems and shared
+organizational codebases. The descriptions here state that boundary directly;
+repository links point to the maintained upstream project.
+
+- [`BCCDC-PHL/fluviewer-nf`](https://github.com/BCCDC-PHL/fluviewer-nf) —
+  influenza whole-genome analysis, genotyping, mutation reporting, provenance,
+  and workflow validation.
+- [`BCCDC-PHL/noro-typing-nf`](https://github.com/BCCDC-PHL/noro-typing-nf) —
+  automated norovirus assembly, typing, and phylogenetic analysis.
+- [`BCCDC-PHL/auto-hcv`](https://github.com/BCCDC-PHL/auto-hcv) — operational
+  automation for HCV genomic analysis.
+
+## Personal repositories
+
+::: {.repo-grid}
+
+::: {.repo-card}
+### [`pyslurm`](https://github.com/jpalmer37/pyslurm)
+A typed Python interface for submitting and monitoring SLURM job arrays through
+Meta's `submitit`.
+:::
+
+::: {.repo-card}
+### [`price_tracker`](https://github.com/jpalmer37/price_tracker)
+A Dockerized Python application for scheduled browser-based collection,
+historical analysis, and alerts.
+:::
+
+::: {.repo-card}
+### [`agent-skills`](https://github.com/jpalmer37/agent-skills)
+Reusable agent skills for Nextflow, Python data work, visualization, and
+interactive dashboards.
+:::
+
+:::
+
+## Technical range
+
+`Python` · `Nextflow DSL2` · `Bash` · `SQL` · `R` · `TypeScript` · `SLURM` ·
+`Apptainer` · `Docker` · `PostgreSQL` · `SQLAlchemy` · `FastAPI` · `AWS CDK` ·
+`S3` · `Lambda` · `SQS` · `EventBridge` · `ECS Fargate` · `GitHub Actions`
+
+## Contact
+
+The best places to reach me are
+[GitHub](https://github.com/jpalmer37) and
+[LinkedIn](https://linkedin.com/in/john-palmer-932542b6/).
+
+:::

@@ -1,0 +1,100 @@
+---
+title: "Workflow automation and validation"
+subtitle: "Turning a pipeline transition into a dependable laboratory system"
+description: "Formal validation, dependency-aware orchestration, result aggregation, and downstream chaining for public-health genomics."
+page-layout: article
+toc: true
+toc-depth: 2
+---
+
+<p class="eyebrow"><span class="prompt">$</span> case-study --system workflow-operations</p>
+
+::: {.case-meta}
+**Role**<br>
+Led and implemented the influenza pipeline transition; contributor to shared
+pathogen-genomics workflows.
+
+**Stack**<br>
+Python, Nextflow, Quarto, SQLAlchemy, SQLite, ART read simulation, SLURM,
+Apptainer, structured JSON logging.
+
+**Status**<br>
+Production workflow, automation, validation, and result-management tooling.
+:::
+
+## The problem
+
+Replacing a pipeline executable is only a small part of changing a laboratory
+workflow. The new analysis must be validated against predefined criteria,
+installed reproducibly, run without constant manual intervention, connected to
+downstream systems, and translated into data structures that scientists can
+review and report.
+
+## The operational system
+
+```{mermaid}
+%%| label: fig-workflow-operations
+%%| fig-cap: "From sequencing input to validated, reportable results."
+%%| fig-alt: "Sequencing data passes through quality gates, a versioned Nextflow pipeline, result parsers and a database, and downstream mutation analysis, while a formal validation path evaluates the pipeline independently."
+
+flowchart LR
+  A[Sequencing run] --> B[Input QC gates]
+  B --> C[Versioned nf-flu workflow]
+  C --> D[Pluggable result parsers]
+  D --> E[(Results database)]
+  D --> F[Reports and notifications]
+  C --> G[Downstream mutation analysis]
+  H[Clinical and simulated truth sets] --> I[Formal validation]
+  C --> I
+  I --> J[Root-cause findings and fixes]
+```
+
+The automation layer describes pipeline order and dependencies as configuration,
+including the version of each pipeline and its compatible Nextflow release. It
+applies configurable QC gates, supports backlog processing, records structured
+events, and chains successful output into downstream mutation analysis.
+
+Result collection uses a registry of small parsers for subtyping, clade calls,
+mapping statistics, completeness, HPAI motifs, genotyping, provenance, and
+mixture reports. New result types can be added without changing orchestration.
+
+## Formal validation
+
+Six evaluation axes were defined before analysis: subtype concordance, clade
+concordance, genome completeness, consensus accuracy, reproducibility, and
+computational performance.
+
+- Subtype validation reported 100% accuracy in a 150-isolate clinical cohort
+  and a 200-isolate simulated cohort.
+- Clade validation reported 100% accuracy in the stated clinical cohort.
+- Consensus accuracy was evaluated across 1,184 influenza segment sequences.
+- Samples were stratified across viral-load ranges rather than selected only
+  from easy, high-input cases.
+
+Validation also found a defective reference associated with a consistent loss
+of terminal completeness in affected H5N1 samples. Removing it raised
+completeness from roughly 97% to above 99.7%, converting a metric anomaly into
+a concrete upstream data fix.
+
+## Shared public work
+
+My role in these projects includes workflow development, automation,
+validation, provenance, and operational improvements. They are shared
+organizational codebases, not solely authored repositories.
+
+- [`CFIA-NCFAD/nf-flu`](https://github.com/CFIA-NCFAD/nf-flu) — maintained
+  upstream influenza workflow.
+- [`BCCDC-PHL/fluviewer-nf`](https://github.com/BCCDC-PHL/fluviewer-nf) —
+  influenza whole-genome analysis and reporting.
+- [`BCCDC-PHL/noro-typing-nf`](https://github.com/BCCDC-PHL/noro-typing-nf) —
+  norovirus assembly, typing, and phylogenetics.
+- [`BCCDC-PHL/auto-hcv`](https://github.com/BCCDC-PHL/auto-hcv) — operational
+  automation for HCV genomic analysis.
+
+## Broader pattern
+
+The reusable idea is that production bioinformatics is a system, not a single
+workflow file. A dependable implementation combines scientific acceptance
+criteria, reproducible execution, explicit dependency and version management,
+structured operational state, durable results, and documentation for both
+developers and laboratory users.

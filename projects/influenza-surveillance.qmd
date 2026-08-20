@@ -1,0 +1,102 @@
+---
+title: "Influenza surveillance"
+subtitle: "Validated mutation analysis across all eight genome segments"
+description: "A case study in reference-aware influenza mutation surveillance, independent validation, and production workflow design."
+page-layout: article
+toc: true
+toc-depth: 2
+---
+
+<p class="eyebrow"><span class="prompt">$</span> case-study --system influenza-surveillance</p>
+
+::: {.case-meta}
+**Role**<br>
+Sole architect and principal developer of the mutation-surveillance platform;
+lead and contributor in related shared workflows.
+
+**Stack**<br>
+Python, Nextflow DSL2, SnpEff, Nextclade, paftools, Biopython, PostgreSQL,
+SQLAlchemy, Apptainer, SLURM, pytest.
+
+**Status**<br>
+Production scientific software with formal validation.
+:::
+
+## The problem
+
+Influenza A surveillance has to reconcile eight independently reassorting
+segments, multiple reference systems, biological numbering conventions, and
+continuously changing mutation definitions. A useful production system must do
+more than call variants: it must keep reference context attached to every
+result, detect invalid configurations before expensive computation, and
+produce evidence that downstream users can audit.
+
+## The system
+
+The platform accepts either sequencing reads or consensus FASTAs. Nextflow
+coordinates reference selection and per-segment analysis; shared Python modules
+normalize variants, correct multi-nucleotide events, translate reference-aware
+coordinates, evaluate configurable mutation watchlists, and prepare structured
+results for reporting and persistence.
+
+```{mermaid}
+%%| label: fig-influenza-system
+%%| fig-cap: "Reference-aware influenza surveillance workflow."
+%%| fig-alt: "Reads or consensus sequences enter a Nextflow workflow, proceed through reference selection, variant calling, normalization, annotation, watchlist evaluation, reporting, and persistence."
+
+flowchart LR
+  A[Reads or consensus FASTA] --> B[Nextflow orchestration]
+  B --> C[Segment and reference selection]
+  C --> D[Variant calling]
+  D --> E[Normalization and MNV correction]
+  E --> F[Reference-aware annotation]
+  F --> G[Mutation watchlists]
+  G --> H[Reports]
+  G --> I[(PostgreSQL results)]
+  D --> J[Independent validation]
+  F --> J
+```
+
+Key design choices include:
+
+- a validated reference-bundle abstraction rather than scattered file paths;
+- fail-fast checks that understand which workflow and input mode is active;
+- cross-sample batching by segment to make efficient use of HPC resources;
+- explicit handling of HA1/HA2 and arbitrary reference-coordinate systems;
+- independently testable Python modules shared across workflow entry points.
+
+## Validation evidence
+
+Validation used independent implementations and orthogonal comparisons rather
+than treating agreement with one tool as ground truth.
+
+| Evaluation | Result |
+| --- | --- |
+| All SNVs, independent Biopython ground truth | F1 **0.9915** across 192 samples × 8 segments |
+| Missense variants | F1 **0.9531** after resolving annotation failures |
+| Independent calling-branch agreement | Macro Jaccard **0.9922** across the preregistered clean set |
+
+Discrepancy analysis exposed two concrete failure modes: limited alignment
+reach in difficult cases and missing feature annotations. Fixing the annotation
+problem raised missense F1 from 0.6510 to 0.9531. This is the engineering value
+of the validation process: it produced changes to the system, not only a score.
+
+## Contribution boundary
+
+The mutation-surveillance platform described above is solely architected and
+principally implemented by me. It operates within a wider ecosystem of shared
+public-health pipelines, databases, and infrastructure. My work in those
+shared repositories includes workflow features, validation, provenance,
+automation, and operational improvements; it is not presented as sole
+ownership of the upstream projects.
+
+## Public artifacts
+
+- [`BCCDC-PHL/fluviewer-nf`](https://github.com/BCCDC-PHL/fluviewer-nf) — a
+  shared public influenza workflow to which I contributed.
+- [`CFIA-NCFAD/nf-flu`](https://github.com/CFIA-NCFAD/nf-flu) — the maintained
+  upstream pipeline used in the later laboratory transition.
+
+The current production mutation-surveillance source is not public. This case
+study is intentionally limited to architecture and validation facts that can be
+described safely.
