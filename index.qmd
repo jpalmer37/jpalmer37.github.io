@@ -177,12 +177,6 @@ Meta's `submitit`.
 :::
 
 ::: {.repo-card}
-### [`price_tracker`](https://github.com/jpalmer37/price_tracker)
-A Dockerized Python application for scheduled browser-based collection,
-historical analysis, and alerts.
-:::
-
-::: {.repo-card}
 ### [`agent-skills`](https://github.com/jpalmer37/agent-skills)
 Reusable agent skills for Nextflow, Python data work, visualization, and
 interactive dashboards.
