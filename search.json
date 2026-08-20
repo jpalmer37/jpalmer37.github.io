@@ -130,7 +130,7 @@
     "href": "index.html#personal-repositories",
     "title": "John Palmer",
     "section": "Personal repositories",
-    "text": "Personal repositories\n\n\npyslurm\nA typed Python interface for submitting and monitoring SLURM job arrays through Meta’s submitit.\n\n\nprice_tracker\nA Dockerized Python application for scheduled browser-based collection, historical analysis, and alerts.\n\n\nagent-skills\nReusable agent skills for Nextflow, Python data work, visualization, and interactive dashboards."
+    "text": "Personal repositories\n\n\npyslurm\nA typed Python interface for submitting and monitoring SLURM job arrays through Meta’s submitit.\n\n\nagent-skills\nReusable agent skills for Nextflow, Python data work, visualization, and interactive dashboards."
   },
   {
     "objectID": "index.html#technical-range",
